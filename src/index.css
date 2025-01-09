@@ -4,27 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   display: flex;
   flex-direction: column;
-  background-color: #212225;
-  padding: 0;
-  margin: 0;
 }
 
-.company-name {
-  color: #B7FF42;
-  font-weight: 500;
-  font-size: 18px;
+.bartop {
+  width: 100%;
+  height: 100px; /* Fixed height for the top bar */
+  background-color: #000;
 }
 
-.middle-navs {
-  color: #838586; 
-  font-size: 18px;
+.bodymain {
+  flex-grow: 1; /* Dynamically fills remaining space */
+  background-color: #333;
 }
-
-.top-nav {
-  font-family: 'inter';
-}
-
 

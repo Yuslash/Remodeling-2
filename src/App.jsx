@@ -3,6 +3,8 @@ import Components from "./Components/Components";
 export default function App() {
 
   return <>
-    <Components />
+   
+    <div className="bartop"></div>
+    <div className="bodymain"></div>
    </>
 }

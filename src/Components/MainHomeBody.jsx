@@ -3,7 +3,7 @@ export default function MainHomeBody() {
   
 
   return <>
-     <div className="w-full h-full bg-sky-300">
+     <div className="main-body w-full h-full bg-orange-300">
     </div> 
   </>
 }

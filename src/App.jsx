@@ -2,9 +2,9 @@ import Components from "./Components/Components";
 
 export default function App() {
 
-  return <>
-   
-    <div className="bartop"></div>
-    <div className="bodymain"></div>
-   </>
+  return <div className="w-full h-full bg-blue-900 flex flex-col top-0 left-0 absolute">
+  
+    <Components />
+     
+  </div>
 }

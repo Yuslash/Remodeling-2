@@ -1,28 +1,49 @@
-import { Canvas } from '@react-three/fiber'
-import './index.css'
-import { OrbitControls } from '@react-three/drei'
+import { useEffect, useState } from 'react';
+import './index.css';
 
 export default function App() {
+  const [isScrollDown, setIsScrollDown] = useState(false);
+  const [scrollAmount, setScrollAmount] = useState(0)
 
-  return <div className='canvas-container w-full h-full'>
+  useEffect(() => {
+    let lastScrollY = window.scrollY; // Track the previous scroll position
 
-    <Canvas style={{ width: '100%', height: '100%', }}
-      camera={{ position: [3, 3, 3] }}
-    >
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollAmount(currentScrollY)
 
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 2]} />
+      if (currentScrollY > lastScrollY) {
+        setIsScrollDown(true); // Scrolling down
+      } else {
+        setIsScrollDown(false); // Scrolling up
+      }
 
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="orange" />
+      lastScrollY = currentScrollY; // Update last scroll position
+    };
 
-      </mesh>
+    window.addEventListener('scroll', handleScroll);
 
-      <OrbitControls />
-    </Canvas>
+    // Cleanup listener on unmounto
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-  </div>
+  return (
+    <>
 
+       <div className='w-full h-screen flex m-10  justify-center '>
+          <div className="expanding-layout w-[500px] h-[200px] bg-blue-400"
+        style={{
+          width: `${500 + scrollAmount * 1}px`,
+          height: `${200 + scrollAmount * 1}px`
+        }}
+      ></div>
+
+      </div>
+
+      <div className="inner-content w-full h-[1200px] bg-black-400"></div>
+    </>
+  );
 }
 

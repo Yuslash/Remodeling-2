@@ -1,8 +1,7 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useControls } from "leva";
-import { PlaneGeometry } from "three";
 
 export default function Experience() {
 
@@ -11,18 +10,21 @@ export default function Experience() {
     levels: { value: 8, min: 1, max: 9, step: 1 }
   })
 
+  const { scene } = useGLTF("/bloom.glb")
+
   return <>
     <div className="w-full h-full">
         <Canvas flat orthographic camera={{zoom: 100}}>
           <ambientLight intensity={0.5} />
           <EffectComposer disableNormalPass>
-            <Bloom intensity={3} mipmapBlur luminanceThreshold={1} levels={10}/>
+            <Bloom intensity={intensity * 4} mipmapBlur luminanceThreshold={1} levels={levels}/>
               <ToneMapping />
           </EffectComposer>
-          <mesh>
+          {/* <mesh>
             <planeGeometry args={[2,2]}/>
             <meshStandardMaterial color='yellow' emissive="yellow" emissiveIntensity={2} />
-          </mesh>
+          </mesh> */}
+          <primitive object={scene} />
           <OrbitControls />
         </Canvas>
     </div>

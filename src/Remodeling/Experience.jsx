@@ -6,7 +6,7 @@ import { useControls } from "leva";
 export default function Experience() {
 
   const { levels, intensity } = useControls({
-    intensity: { value: 0.4, min: 0, max: 1.5, step: 0.01 },
+    intensity: { value: 0.4, min: 0, max: 1.5, step: 0.001 },
     levels: { value: 8, min: 1, max: 9, step: 1 }
   })
 

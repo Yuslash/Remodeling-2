@@ -1,5 +1,5 @@
 import { OrbitControls, useGLTF } from "@react-three/drei"
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing"
 import { useEffect, useRef } from "react"
 import * as THREE from 'three'
@@ -9,22 +9,24 @@ export default function DifferentShape() {
     const { scene, nodes } = useGLTF("/different.glb")
 
     const meshs = []
-    const meshRef = useRef()
 
-    // for (let i = 0; i < scene.children.length; i++) {
-    //     const child = scene.children[i]
-    //     if(child.isMesh) {
-    //         child.rotation.y = Math.PI / 2
-    //         //change the gloom mesh color 
-    //         meshs.push(child)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if (meshRef.current) {
-    //         console.log(meshRef.current)
-    //     }
-    // },[])
+    for (let i = 0; i < scene.children.length; i++) {
+        const child = scene.children[i]
+        if(child.isMesh) {
+            child.rotation.y = Math.PI / 2
+            //change the gloom mesh color 
+            if(i === 0) {
+                child.material.color = new THREE.Color(0xff0000)
+                child.material.emissive = new THREE.Color(0xff0000)
+                child.material.emissiveIntensity = 10
+            } else if(i === 1) {
+                child.material.color = new THREE.Color(0xff4287f5)
+                // child.material.emissive = new THREE.Color(0x00ff00)
+                // child.material.emissiveIntensity = 10
+            }
+            meshs.push(child)
+        }
+    }
 
     return (
         <div className="w-full h-full bg-black">
@@ -38,7 +40,6 @@ export default function DifferentShape() {
                         <primitive 
                         key={mesh.uuid} 
                         object={mesh}
-                        ref={index === 1 ? meshRef : null}
                            />
                     ))} */}
                     <primitive object={scene} />

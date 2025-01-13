@@ -20,10 +20,6 @@ export default function Experience() {
             <Bloom intensity={intensity * 4} mipmapBlur luminanceThreshold={1} levels={levels}/>
               <ToneMapping />
           </EffectComposer>
-          {/* <mesh>
-            <planeGeometry args={[2,2]}/>
-            <meshStandardMaterial color='yellow' emissive="yellow" emissiveIntensity={2} />
-          </mesh> */}
           <primitive
            object={scene}
             />

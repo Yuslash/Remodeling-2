@@ -10,7 +10,7 @@ export default function Experience() {
     levels: { value: 8, min: 1, max: 9, step: 1 }
   })
 
-  const { scene } = useGLTF("/bloom.glb")
+  const { scene } = useGLTF("/different.glb")
 
   return <>
     <div className="w-full h-full">

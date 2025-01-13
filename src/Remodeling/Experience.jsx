@@ -24,7 +24,9 @@ export default function Experience() {
             <planeGeometry args={[2,2]}/>
             <meshStandardMaterial color='yellow' emissive="yellow" emissiveIntensity={2} />
           </mesh> */}
-          <primitive object={scene} />
+          <primitive
+           object={scene}
+            />
           <OrbitControls />
         </Canvas>
     </div>

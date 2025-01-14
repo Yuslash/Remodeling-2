@@ -2,6 +2,7 @@ import Animations from "./Remodeling/Animations";
 import BlenderAnimatoin from "./Remodeling/BlenderAnimation";
 import DifferentShape from "./Remodeling/DifferentShape";
 import Experience from "./Remodeling/Experience";
+import SpotLight from "./Remodeling/Lights/SpotLight";
 import PartTwoBlenderAnimations from "./Remodeling/PartTwoBlenderAnimation";
 
 export default function App() {
@@ -10,4 +11,3 @@ export default function App() {
     <PartTwoBlenderAnimations />
   </div>
 }
-  

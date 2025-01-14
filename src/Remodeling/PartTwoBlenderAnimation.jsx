@@ -14,7 +14,7 @@ const Animations = () => {
   console.log(scene)
 
   useEffect(() => {
-    if (modelRef.current) {
+    if (modelRef.current) { 
       modelRef.current.rotation.y = Math.PI / 2
       
       modelRef.current.children.forEach((child, index) => {

@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber"
 
 const LightModel = () => {
 
-    const { scene, nodes } = useGLTF("/light.glb")
+    const { scene, nodes } = useGLTF("/light1.glb")
 
     console.log(nodes)
 
@@ -20,6 +20,7 @@ export default function SpotLight() {
                 orthographic
                 camera={{zoom: 100}}
             >
+                <ambientLight intensity={0.5} />
                 <LightModel />
                 <OrbitControls />
 

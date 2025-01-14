@@ -27,16 +27,16 @@ const LightInBlender = () => {
     useEffect(() => {
         const handleKeyDown = (event) => {
           if (event.key.toLowerCase() === 'w') {
-            setZPosition((prevZPosition) => prevZPosition + 0.1); // Increase zPosition by 1
+            setZPosition((prevZPosition) => prevZPosition + 0.5); // Increase zPosition by 1
           }
           if (event.key.toLowerCase() === 'a') {
-            setxPosition((prevZPosition) => prevZPosition - 0.1); // Increase zPosition by 1
+            setxPosition((prevZPosition) => prevZPosition - 0.5); // Increase zPosition by 1
           }
           if (event.key.toLowerCase() === 'd') {
-            setxPosition((prevZPosition) => prevZPosition + 0.1); // Increase zPosition by 1
+            setxPosition((prevZPosition) => prevZPosition + 0.5); // Increase zPosition by 1
           }
           if (event.key.toLowerCase() === 's') {
-            setZPosition((prevZPosition) => prevZPosition - 0.1); // Increase zPosition by 1
+            setZPosition((prevZPosition) => prevZPosition - 0.5); // Increase zPosition by 1
           }
         };
     

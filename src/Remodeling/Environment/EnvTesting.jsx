@@ -1,7 +1,7 @@
 import { Environment, Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei"
-import { Canvas, useLoader } from "@react-three/fiber"
-import { Suspense } from "react"
-import { CubeTextureLoader } from "three"
+import { Canvas } from "@react-three/fiber"
+import { Suspense, useRef } from "react"
+import { Effects } from "../Effects"
 
 function Loader() {
     
@@ -16,24 +16,18 @@ function Loader() {
 
 export default function EnvTesting() {
 
-    const cubeTexture = useLoader(CubeTextureLoader, [
-        'map/px.png',
-        'map/nx.png',
-        'map/py.png',
-        'map/ny.png',
-        'map/pz.png',
-        'map/nz.png',
-    ])
-
+    const boxRef = useRef()
 
     return (
         <div className="w-full h-full bg-black">
              <Canvas>
+                
+                <Effects />
 
              <mesh position={[0, 0, 0]}>
-                    <boxGeometry args={[2, 2, 2]} />
+                    <boxGeometry ref={boxRef} args={[2, 2, 2]} />
                     <meshStandardMaterial 
-                    color="orange" 
+                    color="white" 
                     metalness={1}
                     roughness={0}
                     />
@@ -41,10 +35,18 @@ export default function EnvTesting() {
 
                 <Suspense fallback={<Loader />}>
                 <Environment
-                background
-                files={cubeTexture}
-                 />
+                // background
+                files={[
+                    '/map/px.png', 
+                    '/map/nx.png', 
+                    '/map/py.png', 
+                    '/map/ny.png', 
+                    '/map/pz.png', 
+                    '/map/nz.png'
+                ]}
+                />
                 </Suspense>
+
 
                 <OrbitControls />
 

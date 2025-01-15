@@ -48,7 +48,12 @@ const LightInBlender = () => {
         };
       }, []);
 
+
+    //   important code to look down
+
     useEffect(() => {
+
+
         if (nodes.Spot && nodes.Suzanne) {
             spotlightRef.current = nodes.Spot
             suzanneRef.current = nodes.Suzanne

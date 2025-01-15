@@ -1,5 +1,6 @@
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Effects } from "../Effects";
 
 const EnvBlend = () => {
     
@@ -21,6 +22,7 @@ export default function BlenderEnv() {
                 camera={{zoom: 100}}
             >
                 <ambientLight />
+                <Effects />
                 <EnvBlend />
                 <OrbitControls />
             </Canvas>

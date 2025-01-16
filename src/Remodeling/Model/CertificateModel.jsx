@@ -1,7 +1,6 @@
 import { CameraShake, Hud, OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import { PlaneGeometry } from "three";
 import * as THREE from 'three'
 
 const Certificate = () => {

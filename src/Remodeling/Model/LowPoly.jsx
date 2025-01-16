@@ -12,7 +12,7 @@ const LowModel = () => {
     return (
         <group>
             <mesh geometry={nodes.Cube.geometry}  position={nodes.Cube.position} rotation={nodes.Cube.rotation} scale={nodes.Cube.scale} >
-                <meshStandardMaterial color="white"  metalness={1} roughness={0} />
+                <meshStandardMaterial color="white"  metalness={0.8} roughness={0.2} />
             </mesh>
             <mesh geometry={nodes.Cube001.geometry} position={nodes.Cube001.position} rotation={nodes.Cube001.rotation} scale={nodes.Cube001.scale}>
                 <meshStandardMaterial />

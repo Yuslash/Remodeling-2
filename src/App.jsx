@@ -15,10 +15,11 @@ import HallModel from "./Remodeling/Model/HallModel";
 import LowPoly from "./Remodeling/Model/LowPoly";
 import StudioModel from "./Remodeling/Model/StudioModel";
 import PartTwoBlenderAnimations from "./Remodeling/PartTwoBlenderAnimation";
+import Texture from "./TextureModel/Texture";
 
 export default function App() {
 
   return <div className="w-full h-full flex flex-col top-0 left-0 absolute">
-    <StudioModel />
+    <Texture />
   </div>
 }

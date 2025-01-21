@@ -6,6 +6,7 @@ import EnvTesting from "./Remodeling/Environment/EnvTesting";
 import Experience from "./Remodeling/Experience";
 import AntLandscape from "./Remodeling/Landscape/AntLandscape";
 import NoiseTexture from "./Remodeling/Landscape/NoiseTexture";
+import ShadowLand from "./Remodeling/Landscape/ShadowLand";
 import BlenderEnv from "./Remodeling/Lights/BlenderEnv";
 import BlenderLights from "./Remodeling/Lights/BlenderLights";
 import SpotLight from "./Remodeling/Lights/SpotLight";
@@ -20,6 +21,6 @@ import Texture from "./TextureModel/Texture";
 export default function App() {
 
   return <div className="w-full h-full flex flex-col top-0 left-0 absolute">
-    <Texture />
+    <ShadowLand />
   </div>
 }

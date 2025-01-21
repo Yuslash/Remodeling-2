@@ -34,7 +34,7 @@ const EmissiveCube = ({bloomIn, luminanceThreshold, levels, cubeIn}) => {
             step: 0.01
         },
         bokehScale: {
-            value: 10,
+            value: 0,
             min: 0,
             max: 10,
             step: 0.1
@@ -72,7 +72,7 @@ export default function ShadowLand() {
 
     return (
         <div className="w-full h-full bg-black">
-            <Canvas gl={{ logarithmicDepthBuffer: true, antialias: false }} dpr={[1, 1.5]} camera={{ position: [0, 0, 15], fov: 25 }}>
+            <Canvas gl={{ logarithmicDepthBuffer: true, antialias: false }} dpr={[1, 1.5]} camera={{ position: [0, 10, 25], fov: 25 }}>
             <color attach="background" args={['#15151a']} />
             <hemisphereLight intensity={0.5} />
             <ContactShadows resolution={1024} frames={1} position={[0, -1.16, 0]} scale={15} blur={0.5} opacity={1} far={20} />

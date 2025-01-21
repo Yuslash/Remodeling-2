@@ -5,13 +5,13 @@ import * as THREE from 'three'
 
 const EmissiveCube = () => {
     return (
-        <mesh position={[0,20,-50]}>
+        <mesh position={[0,5,-50]}>
                     <planeGeometry 
                     args={[10,10]}
                     />
                     <meshStandardMaterial 
-                    emissive={new THREE.Color(0x00ff00)}
-                    emissiveIntensity={20}
+                    emissive={new THREE.Color(0x792dfc)}
+                    emissiveIntensity={100}
                     fog={false}
 
                     color="purple" />
@@ -64,14 +64,19 @@ export default function Texture() {
     return (
         <div className="w-full h-full bg-black">
             <Canvas shadows
+                  gl={{ outputEncoding: THREE.sRGBEncoding }}
+                  linear
+                  // Enable sRGB output encoding
+
             camera={{position: [0,3,1]}}>
                   <EffectComposer disableNormalPass>
                             <Bloom intensity={2} mipmapBlur luminanceThreshold={1} levels={8}/>
                               <ToneMapping />
                           </EffectComposer>
-                <fog attach="fog" args={['gray', 5, 30]} />
-                {/* <ambientLight intensity={0.2} /> */}
-                <Environment preset="night" background backgroundBlurriness={0.8}  />
+                <fog attach="fog" args={['white', 5, 30]} />
+                <ambientLight intensity={0.2} />
+                <directionalLight color="lightblue" intensity={1} position={[0,5,0]} />
+                {/* <Environment preset="night" background backgroundBlurriness={0.8}  /> */}
                 <mesh rotation={[- Math.PI / 2,0,0]} castShadow receiveShadow>
                     <planeGeometry args={[100,100,100, 100]} />
                     <meshStandardMaterial 

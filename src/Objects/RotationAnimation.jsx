@@ -9,9 +9,11 @@ function RotatingCircle() {
     const meshRef = useRef()
 
     useFrame(() => {
+        
         if (meshRef.current && meshRef.current.rotation.z < 3) {
-          meshRef.current.rotation.z += 0.02
+          meshRef.current.rotation.z += 0.03
         }
+    
     })
 
     return (
@@ -22,7 +24,7 @@ function RotatingCircle() {
                 </EffectComposer>
         <mesh
             ref={meshRef}
-            rotation={[-Math.PI / 2, 0, 0]}
+            rotation={[-Math.PI / 2, 0, 0.5]}
             position={[0, -1.01, 0]}
             >
             <circleGeometry args={[2, 64, 4, 0.5]} />
@@ -39,7 +41,7 @@ function AntiRotatingCircle() {
 
     useFrame(() => {
         if (meshRef.current && meshRef.current.rotation.z > -3) {
-          meshRef.current.rotation.z -= 0.02
+          meshRef.current.rotation.z -= 0.03
         }
     })
 
@@ -51,7 +53,7 @@ function AntiRotatingCircle() {
                 </EffectComposer>
         <mesh
             ref={meshRef}
-            rotation={[-Math.PI / 2, 0, 0]}
+            rotation={[-Math.PI / 2, 0, 0.5]}
             position={[0, -1.01, 0]}
             >
             <circleGeometry args={[2, 64, 4, 0.5]} />

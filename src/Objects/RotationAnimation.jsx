@@ -1,18 +1,35 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from 'three'
 
 function RotatingCircle() {
 
-    const [thetaLength , setThetaLength] = useState(0.5)
+    const [thetaLength , setThetaLength] = useState(0)
     const [isDone, setIsDone] = useState(false)
     const [opacity, setOpacity] = useState(0)
+    const [startAnimation, setStartAnimation] = useState(false)
 
     const meshRef = useRef()
 
+    useEffect(() => {
+
+        const timeout = setTimeout(() => {
+            setStartAnimation(true)
+        }, 2000)
+
+        return () => clearTimeout(timeout)
+
+    }, [])
+
     useFrame(() => {
+
+        if (!startAnimation) {
+            return 
+        } else {
+            setThetaLength(0.5)
+        }
         
         if (meshRef.current && meshRef.current.rotation.z < 3) {
           meshRef.current.rotation.z += 0.03
@@ -55,11 +72,27 @@ function RotatingCircle() {
 
 function AntiRotatingCircle() {
 
-    const [thetaLength , setThetaLength] = useState(0.5)
+    const [thetaLength , setThetaLength] = useState(0)
+    const [startAnimation, setStartAnimation] = useState(false)
 
     const meshRef = useRef()
 
+    useEffect(() =>{
+        const timeout = setTimeout(() => {
+            setStartAnimation(true)
+        }, 2000)
+
+        return () => clearTimeout(timeout)
+    }, [])
+
     useFrame(() => {
+
+        if (!startAnimation) {
+            return 
+        } else {
+            setThetaLength(0.5)
+        }
+
         if (meshRef.current && meshRef.current.rotation.z > -3) {
           meshRef.current.rotation.z -= 0.03
         }

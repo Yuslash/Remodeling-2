@@ -9,8 +9,8 @@ function RotatingCircle() {
     const meshRef = useRef()
 
     useFrame(() => {
-        if (meshRef.current) {
-          meshRef.current.rotation.z += 0.03
+        if (meshRef.current && meshRef.current.rotation.z < 3) {
+          meshRef.current.rotation.z += 0.02
         }
     })
 
@@ -25,7 +25,7 @@ function RotatingCircle() {
             rotation={[-Math.PI / 2, 0, 0]}
             position={[0, -1.01, 0]}
             >
-            <circleGeometry args={[2, 64, 5, 0.5]} />
+            <circleGeometry args={[2, 64, 4, 0.5]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
         </mesh>
       </>
@@ -38,8 +38,8 @@ function AntiRotatingCircle() {
     const meshRef = useRef()
 
     useFrame(() => {
-        if (meshRef.current) {
-          meshRef.current.rotation.z -= 0.03
+        if (meshRef.current && meshRef.current.rotation.z > -3) {
+          meshRef.current.rotation.z -= 0.02
         }
     })
 
@@ -54,7 +54,7 @@ function AntiRotatingCircle() {
             rotation={[-Math.PI / 2, 0, 0]}
             position={[0, -1.01, 0]}
             >
-            <circleGeometry args={[2, 64, 5, 0.5]} />
+            <circleGeometry args={[2, 64, 4, 0.5]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
         </mesh>
       </>

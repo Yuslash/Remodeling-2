@@ -1,10 +1,12 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from 'three'
 
 function RotatingCircle() {
+
+    const [thetaLength , setThetaLength] = useState(0.5)
 
     const meshRef = useRef()
 
@@ -12,22 +14,20 @@ function RotatingCircle() {
         
         if (meshRef.current && meshRef.current.rotation.z < 3) {
           meshRef.current.rotation.z += 0.03
+        } else if (meshRef.current.rotation.z >= 3 && thetaLength !== 6) {
+            setThetaLength(6); // Once rotation is done, update thetaLength to 6
         }
     
     })
 
     return (
       <>
-      <EffectComposer disableNormalPass>
-                  <Bloom intensity={2} mipmapBlur luminanceThreshold={1} levels={8}/>
-                    <ToneMapping />
-                </EffectComposer>
         <mesh
             ref={meshRef}
             rotation={[-Math.PI / 2, 0, 0.5]}
             position={[0, -1.01, 0]}
             >
-            <circleGeometry args={[2, 64, 4, 0.5]} />
+            <circleGeometry args={[2, 64, 4, thetaLength]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
         </mesh>
       </>
@@ -36,6 +36,8 @@ function RotatingCircle() {
 }
 
 function AntiRotatingCircle() {
+
+    const [thetaLength , setThetaLength] = useState(0.5)
 
     const meshRef = useRef()
 
@@ -56,7 +58,7 @@ function AntiRotatingCircle() {
             rotation={[-Math.PI / 2, 0, 0.5]}
             position={[0, -1.01, 0]}
             >
-            <circleGeometry args={[2, 64, 4, 0.5]} />
+            <circleGeometry args={[2, 64, 4, thetaLength]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
         </mesh>
       </>

@@ -137,6 +137,9 @@ function OuterRadiusCircle() {
 // hexagons 3d model
 function HexagonsModel() {
 
+    const [hovered, setHovered] = useState(null)
+    const ref = useRef()
+
     const {scene, nodes, animations} = useGLTF('/floor.glb')
 
     const {actions} = useAnimations(animations, scene)
@@ -151,14 +154,58 @@ function HexagonsModel() {
         }
     }, [actions])
 
-    scene.rotation.y = Math.PI / 2 
-    scene.position.x = -10
-    scene.position.y = -1.7
-    scene.rotation.x = Math.PI / 2
-    scene.position.z = -2
-    scene.receiveShadow = true
 
-    return <primitive object={scene} />
+    useEffect(() => {
+        scene.rotation.y = Math.PI / 2;
+        scene.position.set(-10, -1.7, -2);
+        scene.rotation.x = Math.PI / 2;
+    },[scene])
+
+    useFrame(({raycaster, mouse}) => {
+        if(!ref.current) return 
+
+        raycaster.setFromCamera(mouse, ref.current)
+
+        const intersects = raycaster.intersectObjects(scene.children, true)
+
+        if(intersects.length > 0) {
+            const intersectedObject = intersects[0].object
+            
+            if (intersectedObject !== hovered) {
+                setHovered(intersectedObject);
+            }
+        
+        } else {
+            setHovered(null)
+        }
+
+    })
+    
+    const originalColor = useRef(null)
+
+    useEffect(() => {
+        if (hovered && hovered.material?.color) {
+
+            if(!originalColor?.current) {
+                originalColor.current = hovered.material.color.clone()
+            }
+            hovered.material.color.set('red')
+        }
+
+        return () => {
+            if (hovered && hovered.material?.color && originalColor.current) {
+
+                hovered.material.color.copy(originalColor.current)
+            }
+        }
+
+    }, [hovered])
+
+    return (
+        <group ref={ref}>
+            <primitive object={scene} />
+        </group>
+    )
 }
 
 function PlaneSurfaceFloor()  {

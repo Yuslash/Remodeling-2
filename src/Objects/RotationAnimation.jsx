@@ -173,27 +173,33 @@ function HexagonsModel() {
 
             // Only change color if the hovered object is different from the previous one
             if (intersectedObject !== hovered) {
+
                 // If hovered is not null, reset the previous hovered object's color
-                if (hovered && originalColors.current[hovered.uuid]) {
-                    hovered.material.color.copy(originalColors.current[hovered.uuid]);
-                }
+                // if (hovered && originalColors.current[hovered.uuid]) {
+                //     hovered.material.color.copy(originalColors.current[hovered.uuid]);
+                // }
 
                 // Store the original color of the new intersected object
-                if (intersectedObject.material && intersectedObject.material.color) {
-                    originalColors.current[intersectedObject.uuid] = intersectedObject.material.color.clone();
-                }
+                // if (intersectedObject.material && intersectedObject.material.color) {
+                //     originalColors.current[intersectedObject.uuid] = intersectedObject.material.color.clone();
+                // }
 
                 // Change color of the new intersected object
                 intersectedObject.material.color.set('red');
-
+                // intersectedObject.emissive = new THREE.Color('red')
+                // intersectedObject.emissiveIntensity = 10
+                // intersectedObject.material.needsUpdate = true
                 // Update the hovered object state
                 setHovered(intersectedObject);
-                console.log(intersectedObject)
+                // console.log(intersectedObject)
             }
         } else {
             // If no intersection, reset the color of the previously hovered object
-            if (hovered && originalColors.current[hovered.uuid]) {
-                hovered.material.color.copy(originalColors.current[hovered.uuid]);
+            // if (hovered && originalColors.current[hovered.uuid]) {
+            //     hovered.material.color.copy(originalColors.current[hovered.uuid]);
+            // }
+            if(hovered) {
+                intersectedObject.material.color.set('white');
             }
             setHovered(null);
         }
@@ -205,7 +211,7 @@ function HexagonsModel() {
         </group>
     );
 }
-
+    
 
 
 function PlaneSurfaceFloor()  {

@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Stats, useAnimations, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useEffect, useRef, useState } from "react";
@@ -38,7 +38,7 @@ function RotatingCircle() {
         }
 
         if(setIsDone && opacity< 1) {
-            setOpacity((prevOpacity) => Math.min(prevOpacity + 0.005, 1)); // Fade-in effect
+            setOpacity((prevOpacity) => Math.min(prevOpacity + 0.005, 1))
         }
     
     })
@@ -61,7 +61,7 @@ function RotatingCircle() {
             color="red"
             emissive={new THREE.Color(0xff0000)}
             emissiveIntensity={10}
-            transparent={true} // Ensure transparency works
+            transparent={true} 
           />
         </mesh>
       )}
@@ -133,15 +133,45 @@ function OuterRadiusCircle() {
 }
 
 
+// hexagons 3d model
+function HexagonsModel() {
+
+    const {scene, nodes, animations} = useGLTF('/floor.glb')
+
+    const {actions} = useAnimations(animations, scene)
+
+    console.log(animations)
+
+    useEffect(() => {
+        if (actions) {
+            Object.values(actions).forEach(action => {
+                action.play()
+            })
+        }
+    }, [actions])
+
+    scene.rotation.y = Math.PI / 2 
+    scene.position.x = -11.5
+    scene.position.y = -1.7
+    scene.rotation.x = Math.PI / 2
+    scene.position.z = -2
+    scene.receiveShadow = true
+
+    return <primitive object={scene} />
+}
+
 export default function RotationAnimation() {
     return (
         <div className="w-full h-full bg-black">
             <Canvas>
-                <ambientLight />
+                <ambientLight color="purple" />
+                <directionalLight castShadow color="purple" intensity={10} position={[0,3,3]} />
+                <HexagonsModel />
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
                 <OrbitControls />
+                <Stats />
             </Canvas>
         </div>
       )

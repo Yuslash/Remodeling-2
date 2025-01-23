@@ -136,52 +136,75 @@ function OuterRadiusCircle() {
 
 // hexagons 3d model
 function HexagonsModel() {
-    const [hovered, setHovered] = useState(null)
-    const originalColors = useRef({})
+    
+    const [hovered, setHovered] = useState(null);
+    const originalColors = useRef({});
 
-    const ref = useRef()
-    const { scene, animations } = useGLTF('/floor.glb')
-    const { actions } = useAnimations(animations, scene)
-
-    useEffect(() => {
-        actions?.forEach(action => action.play())
-    }, [actions])
+    const ref = useRef();
+    const { scene, nodes, animations } = useGLTF('/floor.glb');
+    const { actions } = useAnimations(animations, scene);
 
     useEffect(() => {
-        scene.rotation.set(Math.PI / 2, Math.PI / 2, 0)
-        scene.position.set(-10, -1.7, -2)
-    }, [scene])
+        if (actions) {
+            Object.values(actions).forEach(action => {
+                action.play();
+            });
+        }
+    }, [actions]);
+
+    useEffect(() => {
+        scene.rotation.y = Math.PI / 2;
+        scene.position.set(-10, -1.7, -2);
+        scene.rotation.x = Math.PI / 2;
+    }, [scene]);
 
     useFrame(({ raycaster, mouse, camera }) => {
-        if (!ref.current) return
+        if (!ref.current) return;
 
-        raycaster.setFromCamera(mouse, camera)
-        const intersects = raycaster.intersectObjects(scene.children, true)
+        // Set raycaster to the mouse position and camera
+        raycaster.setFromCamera(mouse, camera);
 
+        // Perform intersection check with all nodes
+        const intersects = raycaster.intersectObjects(Object.values(nodes), true);
+
+        // If there is a valid intersection (i.e., hovering over an object)
         if (intersects.length > 0) {
-            const intersectedObject = intersects[0].object
+            const intersectedObject = intersects[0].object;
 
+            // Only change color if the hovered object is different from the previous one
             if (intersectedObject !== hovered) {
-                if (hovered) {
-                    hovered.material.color.copy(originalColors.current[hovered.uuid])
+                // If hovered is not null, reset the previous hovered object's color
+                if (hovered && originalColors.current[hovered.uuid]) {
+                    hovered.material.color.copy(originalColors.current[hovered.uuid]);
                 }
 
-                if (intersectedObject.material) {
-                    originalColors.current[intersectedObject.uuid] = intersectedObject.material.color.clone()
-                    intersectedObject.material.color.set('red')
+                // Store the original color of the new intersected object
+                if (intersectedObject.material && intersectedObject.material.color) {
+                    originalColors.current[intersectedObject.uuid] = intersectedObject.material.color.clone();
                 }
 
-                setHovered(intersectedObject)
+                // Change color of the new intersected object
+                intersectedObject.material.color.set('red');
+
+                // Update the hovered object state
+                setHovered(intersectedObject);
+                console.log(intersectedObject)
             }
-        } else if (hovered) {
-            hovered.material.color.copy(originalColors.current[hovered.uuid])
-            setHovered(null)
+        } else {
+            // If no intersection, reset the color of the previously hovered object
+            if (hovered && originalColors.current[hovered.uuid]) {
+                hovered.material.color.copy(originalColors.current[hovered.uuid]);
+            }
+            setHovered(null);
         }
-    })
+    });
 
-    return <group ref={ref}><primitive object={scene} /></group>
+    return (
+        <group ref={ref}>
+            <primitive object={scene} />
+        </group>
+    );
 }
-
 
 
 

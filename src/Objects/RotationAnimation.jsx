@@ -135,84 +135,84 @@ function OuterRadiusCircle() {
 
 
 // hexagons 3d model
-function HexagonsModel() {
-    
-    const [hovered, setHovered] = useState(null) // State for the currently hovered object
-    const originalMaterials = useRef({}) // Ref to store original materials of objects
-    const ref = useRef()
-    
-    const { scene, nodes, animations } = useGLTF('/floor.glb') // Load the GLTF model
-    const { actions } = useAnimations(animations, scene) // Handle animations
+    function HexagonsModel() {
+        
+        const [hovered, setHovered] = useState(null) // State for the currently hovered object
+        const originalMaterials = useRef({}) // Ref to store original materials of objects
+        const ref = useRef()
+        
+        const { scene, nodes, animations } = useGLTF('/floor.glb') // Load the GLTF model
+        const { actions } = useAnimations(animations, scene) // Handle animations
 
-    // Play all animations from the GLTF file
-    useEffect(() => {
-        if (actions) {
-            Object.values(actions).forEach(action => {
-                action.play()
-            })
-        }
-    }, [actions])
-
-    // Adjust the position and rotation of the loaded scene
-    useEffect(() => {
-        scene.rotation.y = Math.PI / 2
-        scene.position.set(-10, -1.7, -2)
-        scene.rotation.x = Math.PI / 2
-    }, [scene])
-
-    // Handle hover detection and material updates using raycaster
-    useFrame(({ raycaster, mouse, camera }) => {
-        if (!ref.current) return
-    
-        raycaster.setFromCamera(mouse, camera) // Update raycaster
-        const intersects = raycaster.intersectObjects(scene.children, true) // Find intersections
-    
-        if (intersects.length > 0) {
-            const intersectedObject = intersects[0].object
-    
-            // If the hovered object has changed
-            if (hovered !== intersectedObject) {
-                // Restore the material of the previously hovered object
-                if (hovered) {
-                    const originalMaterial = originalMaterials.current[hovered.uuid]
-                    if (originalMaterial) {
-                        hovered.material.dispose()
-                        hovered.material = originalMaterial
-                    }
-                }
-    
-                // Save the original material of the new object
-                if (!originalMaterials.current[intersectedObject.uuid]) {
-                    originalMaterials.current[intersectedObject.uuid] = intersectedObject.material
-                }
-    
-                // Apply the new material
-                intersectedObject.material = new THREE.MeshStandardMaterial({
-                    color: new THREE.Color('red'),
-                    emissive: new THREE.Color('red'),
-                    emissiveIntensity: 5,
+        // Play all animations from the GLTF file
+        useEffect(() => {
+            if (actions) {
+                Object.values(actions).forEach(action => {
+                    action.play()
                 })
-    
-                setHovered(intersectedObject) // Update hovered state
             }
-        } else if (hovered) {
-            // Restore the material if no intersection
-            const originalMaterial = originalMaterials.current[hovered.uuid]
-            if (originalMaterial) {
-                hovered.material.dispose()
-                hovered.material = originalMaterial
-            }
-            setHovered(null) // Clear hovered state
-        }
-    })
-    
+        }, [actions])
 
-    return (
-        <group ref={ref}>
-            <primitive object={scene} />
-        </group>
-    )
-}
+        // Adjust the position and rotation of the loaded scene
+        useEffect(() => {
+            scene.rotation.y = Math.PI / 2
+            scene.position.set(-10, -1.7, -2)
+            scene.rotation.x = Math.PI / 2
+        }, [scene])
+
+        // Handle hover detection and material updates using raycaster
+        useFrame(({ raycaster, mouse, camera }) => {
+            if (!ref.current) return
+        
+            raycaster.setFromCamera(mouse, camera) // Update raycaster
+            const intersects = raycaster.intersectObjects(scene.children, true) // Find intersections
+        
+            if (intersects.length > 0) {
+                const intersectedObject = intersects[0].object
+        
+                // If the hovered object has changed
+                if (hovered !== intersectedObject) {
+                    // Restore the material of the previously hovered object
+                    if (hovered) {
+                        const originalMaterial = originalMaterials.current[hovered.uuid]
+                        if (originalMaterial) {
+                            hovered.material.dispose()
+                            hovered.material = originalMaterial
+                        }
+                    }
+        
+                    // Save the original material of the new object
+                    if (!originalMaterials.current[intersectedObject.uuid]) {
+                        originalMaterials.current[intersectedObject.uuid] = intersectedObject.material
+                    }
+        
+                    // Apply the new material
+                    intersectedObject.material = new THREE.MeshStandardMaterial({
+                        color: new THREE.Color('red'),
+                        emissive: new THREE.Color('red'),
+                        emissiveIntensity: 5,
+                    })
+        
+                    setHovered(intersectedObject) // Update hovered state
+                }
+            } else if (hovered) {
+                // Restore the material if no intersection
+                const originalMaterial = originalMaterials.current[hovered.uuid]
+                if (originalMaterial) {
+                    hovered.material.dispose()
+                    hovered.material = originalMaterial
+                }
+                setHovered(null) // Clear hovered state
+            }
+        })
+        
+
+        return (
+            <group ref={ref}>
+                <primitive object={scene} />
+            </group>
+        )
+    }
 
     
 
@@ -221,7 +221,7 @@ function PlaneSurfaceFloor()  {
     return (
         <mesh rotation={[-Math.PI / 2,0,0]} position={[0,-2,0]} receiveShadow>
             <planeGeometry args={[30,10]} />
-            <meshStandardMaterial color="black" metalness={0.8} roughness={0.2} />
+            <meshStandardMaterial color="black" metalness={1} roughness={0} />
         </mesh>
     )
 }
@@ -238,7 +238,7 @@ export default function RotationAnimation() {
                 <OuterRadiusCircle />
                 <PlaneSurfaceFloor />
                 <OrbitControls />
-                <Environment background preset="night" blur={1} />
+                {/* <Environment background preset="night" blur={1} /> */}
                 <Stats />
             </Canvas>
         </div>

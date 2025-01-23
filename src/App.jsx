@@ -1,4 +1,5 @@
 import FollowPath from "./Animation/FollowPath";
+import NewSurface from "./Animation/NewSurface";
 import RingMesh from "./Objects/RingMesh";
 import RocksObject from "./Objects/RocksObject";
 import RotationAnimation from "./Objects/RotationAnimation";
@@ -24,6 +25,6 @@ import Texture from "./TextureModel/Texture";
 export default function App() {
 
   return <div className="w-full h-full flex flex-col top-0 left-0 absolute">
-    <RotationAnimation />
+    <NewSurface />
   </div>
 }

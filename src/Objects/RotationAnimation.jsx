@@ -144,7 +144,7 @@ function HexagonsModel() {
 
     const {actions} = useAnimations(animations, scene)
 
-    console.log(animations)
+    // console.log(animations)
 
     useEffect(() => {
         if (actions) {
@@ -161,45 +161,25 @@ function HexagonsModel() {
         scene.rotation.x = Math.PI / 2;
     },[scene])
 
-    useFrame(({raycaster, mouse}) => {
+    useFrame(({raycaster, mouse, camera}) => {
+
         if(!ref.current) return 
 
-        raycaster.setFromCamera(mouse, ref.current)
+        raycaster.setFromCamera(mouse, camera)
 
         const intersects = raycaster.intersectObjects(scene.children, true)
 
-        if(intersects.length > 0) {
-            const intersectedObject = intersects[0].object
-            
-            if (intersectedObject !== hovered) {
-                setHovered(intersectedObject);
-            }
-        
+        if(intersects.length > 0){
+            const meshName = intersects[0].object.name
+            if(meshName !== hovered) {
+                setHovered(meshName)
+                console.log(`hovered Mesh: ${meshName}`)
+            } 
         } else {
             setHovered(null)
         }
 
     })
-    
-    const originalColor = useRef(null)
-
-    useEffect(() => {
-        if (hovered && hovered.material?.color) {
-
-            if(!originalColor?.current) {
-                originalColor.current = hovered.material.color.clone()
-            }
-            hovered.material.color.set('red')
-        }
-
-        return () => {
-            if (hovered && hovered.material?.color && originalColor.current) {
-
-                hovered.material.color.copy(originalColor.current)
-            }
-        }
-
-    }, [hovered])
 
     return (
         <group ref={ref}>

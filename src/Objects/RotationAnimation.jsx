@@ -136,81 +136,81 @@ function OuterRadiusCircle() {
 
 // hexagons 3d model
 function HexagonsModel() {
-    
-    const [hovered, setHovered] = useState(null);
-    const originalColors = useRef({});
+    const [hovered, setHovered] = useState(null) // State for the currently hovered object
+    const originalMaterials = useRef({}) // Ref to store original materials of objects
 
-    const ref = useRef();
-    const { scene, nodes, animations } = useGLTF('/floor.glb');
-    const { actions } = useAnimations(animations, scene);
+    const ref = useRef()
+    const { scene, nodes, animations } = useGLTF('/floor.glb') // Load the GLTF model
+    const { actions } = useAnimations(animations, scene) // Handle animations
 
+    // Play all animations from the GLTF file
     useEffect(() => {
         if (actions) {
             Object.values(actions).forEach(action => {
-                action.play();
-            });
+                action.play()
+            })
         }
-    }, [actions]);
+    }, [actions])
 
+    // Adjust the position and rotation of the loaded scene
     useEffect(() => {
-        scene.rotation.y = Math.PI / 2;
-        scene.position.set(-10, -1.7, -2);
-        scene.rotation.x = Math.PI / 2;
-    }, [scene]);
+        scene.rotation.y = Math.PI / 2
+        scene.position.set(-10, -1.7, -2)
+        scene.rotation.x = Math.PI / 2
+    }, [scene])
 
+    // Handle hover detection and material updates using raycaster
     useFrame(({ raycaster, mouse, camera }) => {
-        if (!ref.current) return;
+        if (!ref.current) return
 
-        // Set raycaster to the mouse position and camera
-        raycaster.setFromCamera(mouse, camera);
+        // Update raycaster with the current mouse position and camera
+        raycaster.setFromCamera(mouse, camera)
 
-        // Perform intersection check with all nodes
-        const intersects = raycaster.intersectObjects(Object.values(nodes), true);
+        // Check for intersections with the scene's children
+        const intersects = raycaster.intersectObjects(scene.children, true)
 
-        // If there is a valid intersection (i.e., hovering over an object)
         if (intersects.length > 0) {
-            const intersectedObject = intersects[0].object;
+            const intersectedObject = intersects[0].object
 
-            // Only change color if the hovered object is different from the previous one
+            // Only update if the hovered object has changed
             if (intersectedObject !== hovered) {
+                // Reset the previous hovered object's material
+                if (hovered && originalMaterials.current[hovered.uuid]) {
+                    hovered.material.dispose() // Dispose of the temporary material
+                    hovered.material = originalMaterials.current[hovered.uuid] // Restore the original material
+                }
 
-                // If hovered is not null, reset the previous hovered object's color
-                // if (hovered && originalColors.current[hovered.uuid]) {
-                //     hovered.material.color.copy(originalColors.current[hovered.uuid]);
-                // }
+                // Store the original material of the intersected object
+                if (!originalMaterials.current[intersectedObject.uuid]) {
+                    originalMaterials.current[intersectedObject.uuid] = intersectedObject.material
+                }
 
-                // Store the original color of the new intersected object
-                // if (intersectedObject.material && intersectedObject.material.color) {
-                //     originalColors.current[intersectedObject.uuid] = intersectedObject.material.color.clone();
-                // }
+                // Replace the material with MeshStandardMaterial
+                intersectedObject.material = new THREE.MeshStandardMaterial({
+                    color: intersectedObject.material.color, // Use the current color
+                    emissive: new THREE.Color('red'), // Set emissive color
+                    emissiveIntensity: 5, // Set emissive intensity
+                })
 
-                // Change color of the new intersected object
-                intersectedObject.material.color.set('red');
-                // intersectedObject.emissive = new THREE.Color('red')
-                // intersectedObject.emissiveIntensity = 10
-                // intersectedObject.material.needsUpdate = true
-                // Update the hovered object state
-                setHovered(intersectedObject);
-                // console.log(intersectedObject)
+                setHovered(intersectedObject) // Update the currently hovered object
             }
         } else {
-            // If no intersection, reset the color of the previously hovered object
-            // if (hovered && originalColors.current[hovered.uuid]) {
-            //     hovered.material.color.copy(originalColors.current[hovered.uuid]);
-            // }
-            if(hovered) {
-                intersectedObject.material.color.set('white');
+            // If no intersections, reset the previous hovered object's material
+            if (hovered && originalMaterials.current[hovered.uuid]) {
+                hovered.material.dispose() // Dispose of the temporary material
+                hovered.material = originalMaterials.current[hovered.uuid] // Restore the original material
             }
-            setHovered(null);
+            setHovered(null) // Clear the hovered object state
         }
-    });
+    })
 
     return (
         <group ref={ref}>
             <primitive object={scene} />
         </group>
-    );
+    )
 }
+
     
 
 

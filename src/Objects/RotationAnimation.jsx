@@ -138,13 +138,11 @@ function OuterRadiusCircle() {
 function HexagonsModel() {
 
     const [hovered, setHovered] = useState(null)
+    const originalColor = useRef(null)
     const ref = useRef()
 
-    const {scene, nodes, animations} = useGLTF('/floor.glb')
-
-    const {actions} = useAnimations(animations, scene)
-
-    // console.log(animations)
+    const { scene, nodes, animations } = useGLTF('/floor.glb')
+    const { actions } = useAnimations(animations, scene)
 
     useEffect(() => {
         if (actions) {
@@ -154,28 +152,47 @@ function HexagonsModel() {
         }
     }, [actions])
 
-
     useEffect(() => {
         scene.rotation.y = Math.PI / 2;
         scene.position.set(-10, -1.7, -2);
         scene.rotation.x = Math.PI / 2;
-    },[scene])
+    }, [scene])
 
-    useFrame(({raycaster, mouse, camera}) => {
+    useFrame(({ raycaster, mouse, camera }) => {
 
-        if(!ref.current) return 
+        if (!ref.current) return
 
         raycaster.setFromCamera(mouse, camera)
 
-        const intersects = raycaster.intersectObjects(scene.children, true)
+        const intersects = raycaster.intersectObjects(Object.values(nodes), true) // Intersect all objects in the nodes
 
-        if(intersects.length > 0){
-            const meshName = intersects[0].object.name
-            if(meshName !== hovered) {
-                setHovered(meshName)
-                console.log(`hovered Mesh: ${meshName}`)
-            } 
+        // Check if there is at least one intersection and get the closest one (the first in the array)
+        if (intersects.length > 0) {
+            const intersectedObject = intersects[0].object
+
+            // Only update hover state if it's a different object
+            if (intersectedObject !== hovered) {
+
+                if (hovered && originalColor.current) {
+                    hovered.material.color.copy(originalColor.current)
+                }
+
+                if (intersectedObject.material && intersectedObject.material.color) {
+                    originalColor.current = intersectedObject.material.color.clone()
+                }
+
+                if (intersectedObject.material) {
+                    intersectedObject.material.color.set('red')
+                }
+
+                setHovered(intersectedObject)
+                console.log(`hovered Mesh: ${intersectedObject.name}`)
+            }
+
         } else {
+            if (hovered && originalColor.current) {
+                hovered.material.color.copy(originalColor.current)
+            }
             setHovered(null)
         }
 
@@ -187,6 +204,8 @@ function HexagonsModel() {
         </group>
     )
 }
+
+
 
 function PlaneSurfaceFloor()  {
     return (

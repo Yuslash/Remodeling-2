@@ -136,10 +136,11 @@ function OuterRadiusCircle() {
 
 // hexagons 3d model
 function HexagonsModel() {
+    
     const [hovered, setHovered] = useState(null) // State for the currently hovered object
     const originalMaterials = useRef({}) // Ref to store original materials of objects
-
     const ref = useRef()
+    
     const { scene, nodes, animations } = useGLTF('/floor.glb') // Load the GLTF model
     const { actions } = useAnimations(animations, scene) // Handle animations
 
@@ -162,47 +163,49 @@ function HexagonsModel() {
     // Handle hover detection and material updates using raycaster
     useFrame(({ raycaster, mouse, camera }) => {
         if (!ref.current) return
-
-        // Update raycaster with the current mouse position and camera
-        raycaster.setFromCamera(mouse, camera)
-
-        // Check for intersections with the scene's children
-        const intersects = raycaster.intersectObjects(scene.children, true)
-
+    
+        raycaster.setFromCamera(mouse, camera) // Update raycaster
+        const intersects = raycaster.intersectObjects(scene.children, true) // Find intersections
+    
         if (intersects.length > 0) {
             const intersectedObject = intersects[0].object
-
-            // Only update if the hovered object has changed
-            if (intersectedObject !== hovered) {
-                // Reset the previous hovered object's material
-                if (hovered && originalMaterials.current[hovered.uuid]) {
-                    hovered.material.dispose() // Dispose of the temporary material
-                    hovered.material = originalMaterials.current[hovered.uuid] // Restore the original material
+    
+            // If the hovered object has changed
+            if (hovered !== intersectedObject) {
+                // Restore the material of the previously hovered object
+                if (hovered) {
+                    const originalMaterial = originalMaterials.current[hovered.uuid]
+                    if (originalMaterial) {
+                        hovered.material.dispose()
+                        hovered.material = originalMaterial
+                    }
                 }
-
-                // Store the original material of the intersected object
+    
+                // Save the original material of the new object
                 if (!originalMaterials.current[intersectedObject.uuid]) {
                     originalMaterials.current[intersectedObject.uuid] = intersectedObject.material
                 }
-
-                // Replace the material with MeshStandardMaterial
+    
+                // Apply the new material
                 intersectedObject.material = new THREE.MeshStandardMaterial({
-                    color: intersectedObject.material.color, // Use the current color
-                    emissive: new THREE.Color('red'), // Set emissive color
-                    emissiveIntensity: 5, // Set emissive intensity
+                    color: new THREE.Color('red'),
+                    emissive: new THREE.Color('red'),
+                    emissiveIntensity: 5,
                 })
-
-                setHovered(intersectedObject) // Update the currently hovered object
+    
+                setHovered(intersectedObject) // Update hovered state
             }
-        } else {
-            // If no intersections, reset the previous hovered object's material
-            if (hovered && originalMaterials.current[hovered.uuid]) {
-                hovered.material.dispose() // Dispose of the temporary material
-                hovered.material = originalMaterials.current[hovered.uuid] // Restore the original material
+        } else if (hovered) {
+            // Restore the material if no intersection
+            const originalMaterial = originalMaterials.current[hovered.uuid]
+            if (originalMaterial) {
+                hovered.material.dispose()
+                hovered.material = originalMaterial
             }
-            setHovered(null) // Clear the hovered object state
+            setHovered(null) // Clear hovered state
         }
     })
+    
 
     return (
         <group ref={ref}>

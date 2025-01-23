@@ -126,7 +126,7 @@ function OuterRadiusCircle() {
         position={[0, -1, 0]}
         >
             <circleGeometry args={[1.97, 64]} />
-            <meshBasicMaterial color="blue" />
+            <meshBasicMaterial color={new THREE.Color("#1f0834")} transparent={true} opacity={1} />
         </mesh>
     )
 
@@ -151,13 +151,22 @@ function HexagonsModel() {
     }, [actions])
 
     scene.rotation.y = Math.PI / 2 
-    scene.position.x = -11.5
+    scene.position.x = -10
     scene.position.y = -1.7
     scene.rotation.x = Math.PI / 2
     scene.position.z = -2
     scene.receiveShadow = true
 
     return <primitive object={scene} />
+}
+
+function PlaneSurfaceFloor()  {
+    return (
+        <mesh rotation={[-Math.PI / 2,0,0]} position={[0,-2,0]}>
+            <planeGeometry args={[30,10]} />
+            <meshStandardMaterial color="black"  />
+        </mesh>
+    )
 }
 
 export default function RotationAnimation() {
@@ -170,6 +179,7 @@ export default function RotationAnimation() {
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
+                <PlaneSurfaceFloor />
                 <OrbitControls />
                 <Stats />
             </Canvas>

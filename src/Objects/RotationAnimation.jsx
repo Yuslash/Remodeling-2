@@ -1,4 +1,4 @@
-import { OrbitControls, Stats, useAnimations, useGLTF } from "@react-three/drei";
+import { Environment, OrbitControls, Stats, useAnimations, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useEffect, useRef, useState } from "react";
@@ -124,6 +124,7 @@ function OuterRadiusCircle() {
         <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -1, 0]}
+        castShadow
         >
             <circleGeometry args={[1.97, 64]} />
             <meshBasicMaterial color={new THREE.Color("#1f0834")} transparent={true} opacity={1} />
@@ -162,9 +163,9 @@ function HexagonsModel() {
 
 function PlaneSurfaceFloor()  {
     return (
-        <mesh rotation={[-Math.PI / 2,0,0]} position={[0,-2,0]}>
+        <mesh rotation={[-Math.PI / 2,0,0]} position={[0,-2,0]} receiveShadow>
             <planeGeometry args={[30,10]} />
-            <meshStandardMaterial color="black"  />
+            <meshStandardMaterial color="black" metalness={0.8} roughness={0.2} />
         </mesh>
     )
 }
@@ -181,6 +182,7 @@ export default function RotationAnimation() {
                 <OuterRadiusCircle />
                 <PlaneSurfaceFloor />
                 <OrbitControls />
+                <Environment background preset="night" blur={1} />
                 <Stats />
             </Canvas>
         </div>

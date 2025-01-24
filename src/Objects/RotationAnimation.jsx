@@ -1,7 +1,7 @@
 import { Environment, OrbitControls, Stats, useAnimations, useGLTF } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from 'three'
 import NewSurface from "../Animation/NewSurface";
 
@@ -255,14 +255,28 @@ function NewSurfaceModel() {
     return <primitive object={scene} />
 }
 
+function Rig() {
+    const [vec] = useState(() => new THREE.Vector3()) // Create a vector for smooth lerping
+    const { camera, mouse } = useThree() // Get access to the camera and mouse state
+
+    useFrame(() => {
+        // Interpolate the camera position based on mouse movement
+        const targetPosition = vec.set(mouse.x * 2, 1 + mouse.y, 6) // Adjust Z as needed
+        camera.position.lerp(targetPosition, 0.05) // Smoothly interpolate the camera position
+        camera.lookAt(0, 0, 0) // Ensure the camera is always looking at the origin
+    })
+
+    return null // No need to render anything in the scene
+}
+
+
 export default function RotationAnimation() {
     return (
         <div className="w-full h-full bg-black">
             <Canvas 
-                camera={{
-                    position: [-1,2,5]
-                }}
+                shadows dpr={[1, 2]}
             >
+                <Suspense fallback={null}>
                 <ambientLight />
                 <directionalLight castShadow  position={[0,3,3]} />
                 <HexagonsModel />
@@ -270,8 +284,9 @@ export default function RotationAnimation() {
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
                 <NewSurfaceModel />
-                <OrbitControls />
-                {/* <Environment background preset="night" blur={1} /> */}
+                <Rig />
+                </Suspense>
+                <OrbitControls makeDefault />
                 <Stats />
             </Canvas>
         </div>

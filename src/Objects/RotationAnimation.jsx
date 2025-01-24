@@ -237,6 +237,7 @@ function NewSurfaceModel() {
 
         scene.rotation.y = - Math.PI / 2
         scene.scale.setScalar(0.5)
+        scene.position.y = -1.7
 
     }, [])
 
@@ -261,7 +262,7 @@ function Rig() {
 
     useFrame(() => {
         // Interpolate the camera position based on mouse movement
-        const targetPosition = vec.set(mouse.x * 2, 1 + mouse.y, 6) // Adjust Z as needed
+        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y, 5) // Adjust Z as needed
         camera.position.lerp(targetPosition, 0.05) // Smoothly interpolate the camera position
         camera.lookAt(0, 0, 0) // Ensure the camera is always looking at the origin
     })
@@ -269,13 +270,27 @@ function Rig() {
     return null // No need to render anything in the scene
 }
 
+function GetCameraPosition() {
+    const { camera } = useThree();
+
+    useFrame(() => {
+        // Log the camera's position each frame
+        console.log("Camera Position:", camera.position);
+    });
+
+    return null; // No need to render anything
+}
 
 export default function RotationAnimation() {
     return (
         <div className="w-full h-full bg-black">
             <Canvas 
                 shadows dpr={[1, 2]}
+                camera={{
+                    position: [-1,2,4],
+                }}
             >
+                {/* <GetCameraPosition /> */}
                 <Suspense fallback={null}>
                 <ambientLight />
                 <directionalLight castShadow  position={[0,3,3]} />

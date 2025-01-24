@@ -102,7 +102,7 @@ function AntiRotatingCircle() {
     return (
       <>
       <EffectComposer disableNormalPass>
-                  <Bloom intensity={2} mipmapBlur luminanceThreshold={1} levels={8}/>
+                  <Bloom intensity={1} mipmapBlur luminanceThreshold={0.8} levels={8}/>
                     <ToneMapping />
                 </EffectComposer>
         <mesh
@@ -136,84 +136,50 @@ function OuterRadiusCircle() {
 
 
 // hexagons 3d model
-    function HexagonsModel() {
-        
-        const [hovered, setHovered] = useState(null) // State for the currently hovered object
-        const originalMaterials = useRef({}) // Ref to store original materials of objects
-        const ref = useRef()
-        
-        const { scene, nodes, animations } = useGLTF('/floor.glb') // Load the GLTF model
-        const { actions } = useAnimations(animations, scene) // Handle animations
+function HexagonsModel() {
+  const [hovered, setHovered] = useState(null);
+  const group = useRef();
+  const color = new THREE.Color();
+  const { scene, nodes, animations } = useGLTF("/floor.glb");
+  const { actions } = useAnimations(animations, scene);
 
-        // Play all animations from the GLTF file
-        useEffect(() => {
-            if (actions) {
-                Object.values(actions).forEach(action => {
-                    action.play()
-                })
-            }
-        }, [actions])
+  // Play animations
+  useEffect(() => {
+    Object.values(actions).forEach((action) => action.play());
+  }, [actions]);
 
-        // Adjust the position and rotation of the loaded scene
-        useEffect(() => {
-            scene.rotation.y = Math.PI / 2
-            scene.position.set(-10, -1.7, -2)
-            scene.rotation.x = Math.PI / 2
-        }, [scene])
+  // Set initial position/rotation
+  useEffect(() => {
+    scene.rotation.y = Math.PI / 2;
+    scene.position.set(-10, -1.7, -2);
+    scene.rotation.x = Math.PI / 2;
+  }, [scene]);
 
-        // Handle hover detection and material updates using raycaster
-        useFrame(({ raycaster, mouse, camera }) => {
-            if (!ref.current) return
-        
-            raycaster.setFromCamera(mouse, camera) // Update raycaster
-            const intersects = raycaster.intersectObjects(scene.children, true) // Find intersections
-        
-            if (intersects.length > 0) {
-                const intersectedObject = intersects[0].object
-        
-                // If the hovered object has changed
-                if (hovered !== intersectedObject) {
-                    // Restore the material of the previously hovered object
-                    if (hovered) {
-                        const originalMaterial = originalMaterials.current[hovered.uuid]
-                        if (originalMaterial) {
-                            hovered.material.dispose()
-                            hovered.material = originalMaterial
-                        }
-                    }
-        
-                    // Save the original material of the new object
-                    if (!originalMaterials.current[intersectedObject.uuid]) {
-                        originalMaterials.current[intersectedObject.uuid] = intersectedObject.material
-                    }
-        
-                    // Apply the new material
-                    intersectedObject.material = new THREE.MeshStandardMaterial({
-                        color: new THREE.Color('red'),
-                        emissive: new THREE.Color('red'),
-                        emissiveIntensity: 5,
-                    })
-        
-                    setHovered(intersectedObject) // Update hovered state
-                }
-            } else if (hovered) {
-                // Restore the material if no intersection
-                const originalMaterial = originalMaterials.current[hovered.uuid]
-                if (originalMaterial) {
-                    hovered.material.dispose()
-                    hovered.material = originalMaterial
-                }
-                setHovered(null) // Clear hovered state
-            }
-        })
-        
+  // Update materials on hover
+  useFrame(() => {
+    if (!group.current) return;
 
-        return (
-            <group ref={ref}>
-                <primitive object={scene} />
-            </group>
-        )
-    }
+    // Smoothly transition colors
+    group.current.traverse((child) => {
+      if (child.isMesh) {
+        child.material.color.lerp(
+          color.set(hovered === child.name ? "red" : "#1f0834"), // Original color
+          hovered === child.name ? 0.1 : 0.05
+        );
+      }
+    });
+  });
+
+  return (
+    <group
+      ref={group}
+      onPointerOver={(e) => (e.stopPropagation(), setHovered(e.object.name))}
+      onPointerOut={(e) => (e.stopPropagation(), setHovered(null))}
+    >
+      <primitive object={scene} />
+    </group>
+  );
+}
 
 
 
@@ -270,17 +236,6 @@ function Rig() {
     return null // No need to render anything in the scene
 }
 
-function GetCameraPosition() {
-    const { camera } = useThree();
-
-    useFrame(() => {
-        // Log the camera's position each frame
-        console.log("Camera Position:", camera.position);
-    });
-
-    return null; // No need to render anything
-}
-
 export default function RotationAnimation() {
     return (
         <div className="w-full h-full bg-black">
@@ -299,7 +254,7 @@ export default function RotationAnimation() {
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
                 <NewSurfaceModel />
-                <Rig />
+                {/* <Rig /> */}
                 </Suspense>
                 <OrbitControls makeDefault />
                 <Stats />

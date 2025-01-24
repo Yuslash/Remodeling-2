@@ -276,8 +276,8 @@ export default function RotationAnimation() {
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
-                {/* <NewSurfaceModel /> */}
-                {/* <Rig /> */}
+                <NewSurfaceModel />
+                <Rig />
                 </Suspense>
                 <OrbitControls makeDefault />
                 <Stats />

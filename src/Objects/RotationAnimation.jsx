@@ -24,25 +24,31 @@ function RotatingCircle() {
 
     }, [])
 
-    useFrame(() => {
+    const rotationSpeed = 1.8; // radians per second (0.03 * 60 FPS)
+    const opacitySpeed = 3; // opacity units per second (0.005 * 60 FPS)
 
-        if (!startAnimation) {
-            return 
-        } else {
-            setThetaLength(0.5)
-        }
-        
-        if (meshRef.current && meshRef.current.rotation.z < 3) {
-          meshRef.current.rotation.z += 0.03
-        } else {
-            setIsDone(true)
-        }
+    // Move thetaLength update to useEffect
+    useEffect(() => {
+    if (startAnimation) {
+        setThetaLength(0.5);
+    }
+    }, [startAnimation]);
 
-        if(setIsDone && opacity< 1) {
-            setOpacity((prevOpacity) => Math.min(prevOpacity + 0.005, 1))
-        }
-    
-    })
+    useFrame((state, delta) => {
+    if (!startAnimation || !meshRef.current) return;
+
+    // Handle rotation
+    if (meshRef.current.rotation.z < 3) {
+        meshRef.current.rotation.z += rotationSpeed * delta;
+    } else if (!isDone) {
+        setIsDone(true);
+    }
+
+    // Handle opacity fade-in
+    if (isDone && opacity < 1) {
+        setOpacity(prev => Math.min(prev + opacitySpeed * delta, 1));
+    }
+    });
 
     return (
       <>
@@ -86,18 +92,24 @@ function AntiRotatingCircle() {
         return () => clearTimeout(timeout)
     }, [])
 
-    useFrame(() => {
-
-        if (!startAnimation) {
-            return 
-        } else {
-            setThetaLength(0.5)
+    useFrame((state, delta) => {
+        if (!startAnimation) return;
+        
+        // Set thetaLength once (move this to useEffect if only needed once)
+        setThetaLength(0.5);
+      
+        if (meshRef.current) {
+          // Calculate rotation based on time rather than fixed value
+          const rotationSpeed = 1.8; // radians per second
+          meshRef.current.rotation.z -= rotationSpeed * delta;
+      
+          // Clamp rotation between -3 and initial value
+          meshRef.current.rotation.z = Math.max(
+            meshRef.current.rotation.z,
+            -3
+          );
         }
-
-        if (meshRef.current && meshRef.current.rotation.z > -3) {
-          meshRef.current.rotation.z -= 0.03
-        }
-    })
+      });
 
     return (
       <>
@@ -136,51 +148,62 @@ function OuterRadiusCircle() {
 
 
 // hexagons 3d model
+
+// Predefine hover material outside the component
+const hoverMaterial = new THREE.MeshStandardMaterial({
+  color: 'red',
+  emissive: 'red',
+  emissiveIntensity: 10
+});
+
 function HexagonsModel() {
-  const [hovered, setHovered] = useState(null);
   const group = useRef();
-  const color = new THREE.Color();
-  const { scene, nodes, animations } = useGLTF("/floor.glb");
+  const originalMaterials = useRef({});
+  const { scene, animations } = useGLTF('/floor.glb');
   const { actions } = useAnimations(animations, scene);
 
-  // Play animations
+  // Store original materials and prepare scene
   useEffect(() => {
-    Object.values(actions).forEach((action) => action.play());
-  }, [actions]);
-
-  // Set initial position/rotation
-  useEffect(() => {
-    scene.rotation.y = Math.PI / 2;
-    scene.position.set(-10, -1.7, -2);
-    scene.rotation.x = Math.PI / 2;
-  }, [scene]);
-
-  // Update materials on hover
-  useFrame(() => {
-    if (!group.current) return;
-
-    // Smoothly transition colors
-    group.current.traverse((child) => {
+    scene.traverse((child) => {
       if (child.isMesh) {
-        child.material.color.lerp(
-          color.set(hovered === child.name ? "red" : "#1f0834"), // Original color
-          hovered === child.name ? 0.1 : 0.05
-        );
+        // Store original material by UUID
+        originalMaterials.current[child.uuid] = child.material;
       }
     });
-  });
+
+    scene.rotation.set(Math.PI/2, Math.PI/2, 0);
+    scene.position.set(-10, -1.7, -2);
+  }, [scene]);
+
+  // Handle animations
+  useEffect(() => {
+    Object.values(actions).forEach(action => action?.play());
+  }, [actions]);
+
+  // Hover handler
+  const handleHover = (e) => {
+    e.stopPropagation();
+    const mesh = e.object;
+    mesh.material = hoverMaterial;
+  };
+
+  // Unhover handler
+  const handleUnhover = (e) => {
+    e.stopPropagation();
+    const mesh = e.object;
+    mesh.material = originalMaterials.current[mesh.uuid];
+  };
 
   return (
-    <group
+    <group 
       ref={group}
-      onPointerOver={(e) => (e.stopPropagation(), setHovered(e.object.name))}
-      onPointerOut={(e) => (e.stopPropagation(), setHovered(null))}
+      onPointerOver={handleHover}
+      onPointerOut={handleUnhover}
     >
       <primitive object={scene} />
     </group>
   );
 }
-
 
 
 
@@ -249,7 +272,7 @@ export default function RotationAnimation() {
                 <Suspense fallback={null}>
                 <ambientLight />
                 <directionalLight castShadow  position={[0,3,3]} />
-                {/* <HexagonsModel /> */}
+                <HexagonsModel />
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />

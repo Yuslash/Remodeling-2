@@ -3,6 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from 'three'
+import NewSurface from "../Animation/NewSurface";
 
 function RotatingCircle() {
 
@@ -214,7 +215,7 @@ function OuterRadiusCircle() {
         )
     }
 
-    
+
 
 
 function PlaneSurfaceFloor()  {
@@ -226,17 +227,49 @@ function PlaneSurfaceFloor()  {
     )
 }
 
+function NewSurfaceModel() {
+
+    const { scene, nodes, animations } = useGLTF('/surface.glb')
+
+    const { actions } = useAnimations(animations, scene)
+
+    useEffect(() => {
+
+        scene.rotation.y = - Math.PI / 2
+        scene.scale.setScalar(0.5)
+
+    }, [])
+
+    useEffect(() => {
+        if (actions) {
+            Object.values(actions).forEach(action => {
+                action.play()
+            })
+        }
+    }, [actions])
+
+    console.log(nodes)
+
+
+
+    return <primitive object={scene} />
+}
+
 export default function RotationAnimation() {
     return (
         <div className="w-full h-full bg-black">
-            <Canvas>
-                <ambientLight color="purple" />
-                <directionalLight castShadow color="purple" intensity={10} position={[0,3,3]} />
+            <Canvas 
+                camera={{
+                    position: [-1,2,5]
+                }}
+            >
+                <ambientLight />
+                <directionalLight castShadow  position={[0,3,3]} />
                 <HexagonsModel />
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
-                <PlaneSurfaceFloor />
+                <NewSurfaceModel />
                 <OrbitControls />
                 {/* <Environment background preset="night" blur={1} /> */}
                 <Stats />

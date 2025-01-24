@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { AnimationMixer, Clock } from "three"
 
 class NewSurfaceClass extends Component {
+    
     constructor(props) {
         super(props)
         this.state = {

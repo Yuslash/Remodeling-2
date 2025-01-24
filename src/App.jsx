@@ -26,6 +26,6 @@ import Texture from "./TextureModel/Texture";
 export default function App() {
 
   return <div className="w-full h-full flex flex-col top-0 left-0 absolute">
-    <NewSurfaceClass filename="/surface.glb" />
+    <RotationAnimation />
   </div>
 }

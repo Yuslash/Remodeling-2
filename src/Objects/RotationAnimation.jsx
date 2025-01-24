@@ -24,7 +24,7 @@ function RotatingCircle() {
 
     }, [])
 
-    const rotationSpeed = 1.8; // radians per second (0.03 * 60 FPS)
+    const rotationSpeed = 3; // radians per second (0.03 * 60 FPS)
     const opacitySpeed = 3; // opacity units per second (0.005 * 60 FPS)
 
     // Move thetaLength update to useEffect
@@ -100,7 +100,7 @@ function AntiRotatingCircle() {
       
         if (meshRef.current) {
           // Calculate rotation based on time rather than fixed value
-          const rotationSpeed = 1.8; // radians per second
+          const rotationSpeed = 3; // radians per second
           meshRef.current.rotation.z -= rotationSpeed * delta;
       
           // Clamp rotation between -3 and initial value
@@ -153,13 +153,13 @@ function OuterRadiusCircle() {
 const hoverMaterial = new THREE.MeshStandardMaterial({
   color: 'red',
   emissive: 'red',
-  emissiveIntensity: 10
+  emissiveIntensity: 5
 });
 
 function HexagonsModel() {
   const group = useRef();
   const originalMaterials = useRef({});
-  const { scene, animations } = useGLTF('/floor.glb');
+  const { scene, animations } = useGLTF('/wall.glb');
   const { actions } = useAnimations(animations, scene);
 
   // Store original materials and prepare scene
@@ -246,14 +246,14 @@ function NewSurfaceModel() {
 }
 
 function Rig() {
-    const [vec] = useState(() => new THREE.Vector3()) // Create a vector for smooth lerping
-    const { camera, mouse } = useThree() // Get access to the camera and mouse state
+    const [vec] = useState(() => new THREE.Vector3()) 
+    const { camera, mouse } = useThree() 
 
     useFrame(() => {
         // Interpolate the camera position based on mouse movement
-        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y, 5) // Adjust Z as needed
-        camera.position.lerp(targetPosition, 0.05) // Smoothly interpolate the camera position
-        camera.lookAt(0, 0, 0) // Ensure the camera is always looking at the origin
+        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y, 5) 
+        camera.position.lerp(targetPosition, 0.05) 
+        camera.lookAt(0, 0, 0) 
     })
 
     return null // No need to render anything in the scene
@@ -271,7 +271,7 @@ export default function RotationAnimation() {
                 {/* <GetCameraPosition /> */}
                 <Suspense fallback={null}>
                 <ambientLight />
-                <directionalLight castShadow  position={[0,3,3]} />
+                <directionalLight castShadow intensity={5} color="purple" position={[0,3,3]} />
                 <HexagonsModel />
                 <RotatingCircle />
                 <AntiRotatingCircle />

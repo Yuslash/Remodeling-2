@@ -249,11 +249,11 @@ export default function RotationAnimation() {
                 <Suspense fallback={null}>
                 <ambientLight />
                 <directionalLight castShadow  position={[0,3,3]} />
-                <HexagonsModel />
+                {/* <HexagonsModel /> */}
                 <RotatingCircle />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
-                <NewSurfaceModel />
+                {/* <NewSurfaceModel /> */}
                 {/* <Rig /> */}
                 </Suspense>
                 <OrbitControls makeDefault />

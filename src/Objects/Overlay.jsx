@@ -23,7 +23,7 @@ export default function Overlay() {
                 Leverage influencers, write compelling marketing materials,
                 master communication, find writers, and use badges
             </div>
-            <div className="flex gap-[22px] mt-[20px]">
+            <div className="flex gap-[22px] mt-[20px] pointer-events-auto">
                 <div className="ayr-button rounded-[10px] px-[20px] py-[15px] cursor-pointer">Get Started</div>
                 <div className="ayr-pricing rounded-[10px] px-[20px] py-[15px] cursor-pointer">Pricing</div>
             </div>

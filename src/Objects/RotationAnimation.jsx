@@ -312,6 +312,8 @@ export default function RotationAnimation() {
                 <Suspense fallback={null}>
                 <animated.ambientLight intensity={progress.to(p => p * 0.5)} />
                 <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="purple" position={[0,3,3]} />
+                <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="indigo" position={[0,3,0]} />
+
                 <HexagonsModel />
                 <RotatingCircle />
                 <CeritficateModel />

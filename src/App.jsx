@@ -34,8 +34,8 @@ export default function App() {
       </div>
       
       {/* Overlay Container */}
-      <div className="absolute top-0 left-0 w-1/2 h-full bg-white z-10 opacity-50 pointer-events-none">
-        {/* Your overlay content here */}
+      <div className="overlay-three absolute top-0 left-0 w-full h-full pointer-events-none">
+        <Overlay />
       </div>
     </div>
   )

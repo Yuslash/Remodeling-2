@@ -267,9 +267,9 @@ function Rig() {
 
     useFrame(() => {
         // Interpolate the camera position based on mouse movement
-        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y, 5) 
+        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y,5) 
         camera.position.lerp(targetPosition, 0.05) 
-        camera.lookAt(0, 0, 0) 
+        camera.lookAt(-1, 0, 0) 
     })
 
     return null // No need to render anything in the scene

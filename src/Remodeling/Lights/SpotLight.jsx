@@ -12,8 +12,8 @@ const LightModel = () => {
 
       return (
         <>
-        <primitive object={monkey} />
-        <primitive object={plane} />
+            <primitive object={monkey} />
+            <primitive object={plane} />
         </>
       )
 }

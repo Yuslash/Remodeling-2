@@ -4,6 +4,7 @@ import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing"
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from 'three'
 import NewSurface from "../Animation/NewSurface";
+import { useSpring, animated } from "@react-spring/three";
 
 function RotatingCircle() {
 
@@ -260,7 +261,14 @@ function Rig() {
 }
 
 export default function RotationAnimation() {
-    return (
+
+    const {progress} = useSpring({
+      from: {progress: 0},
+      to: {progress: 1},
+      cocnfig: {duration: 2000},
+    })
+
+      return (
         <div className="w-full h-full bg-black">
             <Canvas 
                 shadows dpr={[1, 2]}
@@ -270,8 +278,8 @@ export default function RotationAnimation() {
             >
                 {/* <GetCameraPosition /> */}
                 <Suspense fallback={null}>
-                <ambientLight />
-                <directionalLight castShadow intensity={5} color="purple" position={[0,3,3]} />
+                <animated.ambientLight intensity={progress.to(p => p * 0.5)} />
+                <animated.directionalLight castShadow intensity={progress.to(p => p * 5)} color="purple" position={[0,3,3]} />
                 <HexagonsModel />
                 <RotatingCircle />
                 <AntiRotatingCircle />

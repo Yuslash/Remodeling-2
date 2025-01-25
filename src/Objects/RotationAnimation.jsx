@@ -137,13 +137,13 @@ function OuterRadiusCircle() {
   const { color } = useSpring({
     from: { color: '#000000' },
     to: { color: "#1f0834" },
-    config: { duration: 6000 },
+    config: { duration: 20000 },
   })
 
   const { opacity } = useSpring({
     from: { opacity: 0 },
     to: {opacity: 1},
-    config: {duration: 2000}
+    config: {duration: 1500}
   })
 
   return (
@@ -275,6 +275,21 @@ function Rig() {
     return null // No need to render anything in the scene
 }
 
+function CeritficateModel() {
+
+    const { scene } = useGLTF("/certficitat.glb")
+
+    useEffect(() => {
+
+      scene.rotation.y = Math.PI 
+      scene.position.y = -1
+      scene.scale.setScalar(1.5)
+
+    },[])
+
+    return <primitive object={scene} />
+}
+
 export default function RotationAnimation() {
 
     const {progress} = useSpring({
@@ -287,6 +302,7 @@ export default function RotationAnimation() {
       return (
         <div className="w-full h-full bg-black">
             <Canvas 
+                gl={{ antialias: false }}
                 shadows dpr={[1, 2]}
                 camera={{
                     position: [-1,2,4],
@@ -295,9 +311,10 @@ export default function RotationAnimation() {
                 {/* <GetCameraPosition /> */}
                 <Suspense fallback={null}>
                 <animated.ambientLight intensity={progress.to(p => p * 0.5)} />
-                <animated.directionalLight castShadow intensity={progress.to(p => p * 5)} color="purple" position={[0,3,3]} />
+                <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="purple" position={[0,3,3]} />
                 <HexagonsModel />
                 <RotatingCircle />
+                <CeritficateModel />
                 <AntiRotatingCircle />
                 <OuterRadiusCircle />
                 <NewSurfaceModel />

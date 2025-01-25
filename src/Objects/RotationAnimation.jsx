@@ -133,18 +133,33 @@ function AntiRotatingCircle() {
 
 
 function OuterRadiusCircle() {
+  // Destructure BOTH opacity and color from the spring
+  const { color } = useSpring({
+    from: { color: '#000000' },
+    to: { color: "#1f0834" },
+    config: { duration: 6000 },
+  })
 
-    return (
-        <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -1, 0]}
-        castShadow
-        >
-            <circleGeometry args={[1.97, 64]} />
-            <meshBasicMaterial color={new THREE.Color("#1f0834")} transparent={true} opacity={1} />
-        </mesh>
-    )
+  const { opacity } = useSpring({
+    from: { opacity: 0 },
+    to: {opacity: 1},
+    config: {duration: 2000}
+  })
 
+  return (
+    <animated.mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, -1, 0]}
+      castShadow
+    >
+      <circleGeometry args={[1.97, 64]} />
+      <animated.meshBasicMaterial
+        color={color}  // Directly use the animated color value
+        transparent={true}
+        opacity={opacity}
+      />
+    </animated.mesh>
+  );
 }
 
 
@@ -265,7 +280,8 @@ export default function RotationAnimation() {
     const {progress} = useSpring({
       from: {progress: 0},
       to: {progress: 1},
-      cocnfig: {duration: 2000},
+      config: {duration: 2000},
+      delay: 1000,
     })
 
       return (

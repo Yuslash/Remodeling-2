@@ -5,6 +5,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from 'three'
 import NewSurface from "../Animation/NewSurface";
 import { useSpring, animated } from "@react-spring/three";
+import { useControls } from "leva";
 
 function RotatingCircle() {
 
@@ -56,13 +57,13 @@ function RotatingCircle() {
         <mesh
             ref={meshRef}
             rotation={[-Math.PI / 2, 0, 0.5]}
-            position={[0, -1.01, 0]}
+            position={[3, -1.01, 0]}
             >
             <circleGeometry args={[2, 64, 4, thetaLength]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
         </mesh>
         {isDone && (
-        <mesh rotation={[-Math.PI / 2, 0, 0.5]} position={[0, -1.01, 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0.5]} position={[3, -1.01, 0]}>
           <circleGeometry args={[2, 64, 4, 6.3]} />
           <meshStandardMaterial
             opacity={opacity}
@@ -121,7 +122,7 @@ function AntiRotatingCircle() {
         <mesh
             ref={meshRef}
             rotation={[-Math.PI / 2, 0, 0.5]}
-            position={[0, -1.01, 0]}
+            position={[3, -1.01, 0]}
             >
             <circleGeometry args={[2, 64, 4, thetaLength]} />
             <meshStandardMaterial color="red" emissive={new THREE.Color(0xff0000)} emissiveIntensity={10}/>
@@ -149,7 +150,7 @@ function OuterRadiusCircle() {
   return (
     <animated.mesh
       rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, -1, 0]}
+      position={[3, -1, 0]}
       castShadow
     >
       <circleGeometry args={[1.97, 64]} />
@@ -267,7 +268,7 @@ function Rig() {
 
     useFrame(() => {
         // Interpolate the camera position based on mouse movement
-        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y,5) 
+        const targetPosition = vec.set(mouse.x * 0.5, 0.5 + mouse.y, 8) 
         camera.position.lerp(targetPosition, 0.05) 
         camera.lookAt(-1, 0, 0) 
     })
@@ -283,7 +284,8 @@ function CeritficateModel() {
 
       scene.rotation.y = Math.PI 
       scene.position.y = -1
-      scene.scale.setScalar(1.5)
+      scene.position.x = 3
+      scene.scale.setScalar(2.5)
 
     },[])
 
@@ -312,7 +314,7 @@ export default function RotationAnimation() {
                 <Suspense fallback={null}>
                 <animated.ambientLight intensity={progress.to(p => p * 0.5)} />
                 <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="purple" position={[0,3,3]} />
-                <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="indigo" position={[0,3,0]} />
+                <animated.directionalLight castShadow intensity={progress.to(p => p * 10)} color="purple" position={[0,3,0]} />
 
                 <HexagonsModel />
                 <RotatingCircle />
@@ -322,7 +324,7 @@ export default function RotationAnimation() {
                 <NewSurfaceModel />
                 <Rig />
                 </Suspense>
-                <OrbitControls makeDefault />
+                <OrbitControls enableZoom={false} makeDefault />
                 <Stats />
             </Canvas>
         </div>

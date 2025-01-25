@@ -1,6 +1,7 @@
 import FollowPath from "./Animation/FollowPath";
 import NewSurface from "./Animation/NewSurface";
 import NewSurfaceClass from "./Class/NewSurfaceClass";
+import Overlay from "./Objects/Overlay";
 import RingMesh from "./Objects/RingMesh";
 import RocksObject from "./Objects/RocksObject";
 import RotationAnimation from "./Objects/RotationAnimation";
@@ -25,7 +26,17 @@ import Texture from "./TextureModel/Texture";
 
 export default function App() {
 
-  return <div className="w-full h-full flex flex-col top-0 left-0 absolute">
-    <RotationAnimation />
-  </div>
+  return (
+    <div className="w-screen h-screen relative">
+      {/* Canvas Container */}
+      <div className="w-full h-full absolute z-0">
+        <RotationAnimation />
+      </div>
+      
+      {/* Overlay Container */}
+      <div className="absolute top-0 left-0 w-1/2 h-full bg-white z-10 opacity-50 pointer-events-none">
+        {/* Your overlay content here */}
+      </div>
+    </div>
+  )
 }

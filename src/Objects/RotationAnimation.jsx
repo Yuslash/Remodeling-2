@@ -278,14 +278,14 @@ function Rig() {
 
 function CeritficateModel() {
 
-    const { scene } = useGLTF("/certficitat.glb")
+    const { scene } = useGLTF("/robo.glb")
 
     useEffect(() => {
 
       scene.rotation.y = Math.PI 
       scene.position.y = -1
       scene.position.x = 3
-      scene.scale.setScalar(2.5)
+      scene.scale.setScalar(1)
 
     },[])
 

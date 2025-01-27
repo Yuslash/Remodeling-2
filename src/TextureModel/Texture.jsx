@@ -28,15 +28,15 @@ export default function Texture() {
         aoMap,
     ] = useLoader(
         THREE.TextureLoader, [
-            // '/sandTexture/coast_sand_05_2k/coast_sand_05_diff_2k.jpg',
-            // '/sandTexture/coast_sand_05_2k/coast_sand_05_nor_gl_2k.jpg',
-            // '/sandTexture/coast_sand_05_2k/coast_sand_05_disp_2k.jpg',
-            // '/sandTexture/coast_sand_05_2k/coast_sand_05_arm_2k.jpg',
+            '/sandTexture/coast_sand_05_2k/coast_sand_05_diff_2k.jpg',
+            '/sandTexture/coast_sand_05_2k/coast_sand_05_nor_gl_2k.jpg',
+            '/sandTexture/coast_sand_05_2k/coast_sand_05_disp_2k.jpg',
+            '/sandTexture/coast_sand_05_2k/coast_sand_05_arm_2k.jpg',
 
-            '/textures/rocky_terrain_diff_2k.jpg',
-            '/textures/rocky_terrain_nor_gl_2k.jpg',
-            '/textures/rocky_terrain_disp_2k.jpg',
-            '/textures/rocky_terrain_arm_2k.jpg',
+            // '/textures/rocky_terrain_diff_2k.jpg',
+            // '/textures/rocky_terrain_nor_gl_2k.jpg',
+            // '/textures/rocky_terrain_disp_2k.jpg',
+            // '/textures/rocky_terrain_arm_2k.jpg',
         ]
     )
 

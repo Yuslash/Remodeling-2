@@ -13,7 +13,7 @@ function Rig() {
 
 const CertificateModel = () => {
   
-  const { scene } = useGLTF('/certficitat.glb')
+  const { scene } = useGLTF('/robo.glb')
 
   const modelRef = useRef()
 
@@ -21,6 +21,7 @@ const CertificateModel = () => {
     if (modelRef.current) {
       modelRef.current.position.set(-5, -1, 0); // Set x, y, z coordinates
       modelRef.current.rotation.y = -Math.PI / 2
+      scene.scale.setScalar(0.5)
     }
   }, [])
 

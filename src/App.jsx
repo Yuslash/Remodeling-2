@@ -24,19 +24,28 @@ import StudioModel from "./Remodeling/Model/StudioModel";
 import PartTwoBlenderAnimations from "./Remodeling/PartTwoBlenderAnimation";
 import Texture from "./TextureModel/Texture";
 
+// export default function App() {
+
+//   return (
+//     <div className="w-screen h-screen relative">
+//       {/* Canvas Container */}
+//       <div className="w-full h-full absolute z-0">
+//         <RotationAnimation />
+//       </div>
+      
+//       {/* Overlay Container */}
+//       <div className="overlay-three absolute top-0 left-0 w-full h-full pointer-events-none">
+//         <Overlay />
+//       </div>
+//     </div>
+//   )
+// }
+
 export default function App() {
 
   return (
-    <div className="w-screen h-screen relative">
-      {/* Canvas Container */}
-      <div className="w-full h-full absolute z-0">
-        <RotationAnimation />
-      </div>
-      
-      {/* Overlay Container */}
-      <div className="overlay-three absolute top-0 left-0 w-full h-full pointer-events-none">
-        <Overlay />
-      </div>
-    </div>
+    <div className="absoulte top-0 left-0 w-full h-screen ">
+        <ShadowLand />
+    </div> 
   )
 }

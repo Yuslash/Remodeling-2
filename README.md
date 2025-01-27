@@ -61,7 +61,7 @@ Through these experiments, I’ve dived deep into:
    ```
 3. Enter the Matrix (start the dev server):
    ```bash
-   npm start
+   npm run dev
    ```
 4. Marvel at my experiments and maybe laugh a little at my mistakes. 🤷‍♂️
 

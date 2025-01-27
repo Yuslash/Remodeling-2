@@ -16,16 +16,17 @@ Here’s a quick preview of the results of my experiments:
 
 | Screenshot | Description |
 |------------|-------------|
-| ![Screenshot 1](./path-to-screenshot1.png) | Experiment 1: Some cool 3D transformation magic ✨ |
-| ![Screenshot 2](./path-to-screenshot2.png) | Experiment 2: Objects floating in glorious space 🚀 |
-| ![Screenshot 3](./path-to-screenshot3.png) | Experiment 3: Lights, camera, and... action? 🎥 |
-| ![Screenshot 4](./path-to-screenshot4.png) | Experiment 4: Dynamic interactions that (hopefully) worked 😅 |
+| ![Screenshot 1](./screenshots/screenshot1.png) | Experiment 1: Some cool 3D transformation magic ✨ |
+| ![Screenshot 2](./screenshots/screenshot2.png) | Experiment 2: Objects floating in glorious space 🚀 |
+| ![Screenshot 3](./screenshots/screenshot3.png) | Experiment 3: Lights, camera, and... action? 🎥 |
+| ![Screenshot 4](./screenshots/screenshot4.png) | Experiment 4: Dynamic interactions that (hopefully) worked 😅 |
 
 ---
 
 ## 🧪 Lessons Learned
 
-> [!TIP] **Every mistake is an opportunity to learn, and boy, did I make some!**
+>[!TIP] 
+>**Every mistake is an opportunity to learn, and boy, did I make some!**
 
 Through these experiments, I’ve dived deep into:
 
@@ -37,11 +38,14 @@ Through these experiments, I’ve dived deep into:
 
 ## ⚠️ Important Notices & Cautions
 
-> [!IMPORTANT] This repo is a testing ground, not a finished product. Expect creative chaos and surprises. 
+>[!IMPORTANT] 
+>This repo is a testing ground, not a finished product. Expect creative chaos and surprises. 
 
-> [!CAUTION] Some experiments might be heavy on your GPU. Keep an eye on your FPS and make sure your device doesn't overheat! 🥵
+>[!CAUTION]
+>Some experiments might be heavy on your GPU. Keep an eye on your FPS and make sure your device doesn't overheat! 🥵
 
-> [!TIP] Use a dark theme for your editor. Bright themes and 3D debugging = instant regret. 😵‍💫
+>[!TIP] 
+>Use a dark theme for your editor. Bright themes and 3D debugging = instant regret. 😵‍💫
 
 ---
 
